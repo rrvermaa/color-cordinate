@@ -34,7 +34,6 @@ for i in range(1,9):
     no=i
     image_path = f'results/mask_{no}.png'
 
-
     image=cv2.imread(image_path)
     points=4
     red = [0,0,128]
@@ -83,7 +82,6 @@ for i in range(1,9):
     while True:
             checkImage=image.copy()
             cv2.line(checkImage, (x1, y1), (x5, y2), (0, 255, 0), 2) 
-            cv2.imwrite('image.png',checkImage)
             green = [0,255,0]
             GY, GX = np.where(np.all(checkImage==green,axis=2))
             i=0
@@ -101,25 +99,22 @@ for i in range(1,9):
                 break
 
             if x5>0:
-                x5-=2
+                x5-=3
 
             if check==0:
-                y2-=2
-                x1-=6
+                y2-=3
+                x1-=8
 
     x5+=2
     y2+=2
     x1+=6
 
-    rightLowerX=interpolate_x(x1,y1,x5,y2,1599)
-    print(rightLowerX,1599)
-
+    rightLowerX=int(interpolate_x(x1,y1,x5,y2,1599))
 
     check=0
     while True:
             checkImage=image.copy()
             cv2.line(checkImage, (x2, y1), (x6, y4), (0, 255, 0), 2) 
-            cv2.imwrite('image.png',checkImage)
             green = [0,255,0]
             GY, GX = np.where(np.all(checkImage==green,axis=2))
             i=0
@@ -137,33 +132,23 @@ for i in range(1,9):
             if check==1:
                 break
             if x6<2558:
-                x6+=2
-
+                x6+=3
 
             if check==0:
-                y4-=2
-                x2+=6
+                y4-=3
+                x2+=8
     
     x6-=2
     y4+=2
     x2-=6
 
-    leftLowerX=interpolate_x(x2,y1,x6,y4,1599)
-    print(leftLowerX,1599)
+    leftLowerX=int(interpolate_x(x2,y1,x6,y4,1599))
 
-
-
-
-    print("Check")
     cv2.line(image, (x1, y1), (x2, y1), (0, 255, 0), 2) #upper
 
-    cv2.line(image, (x1, y1), (x5, y2), (0, 255, 0), 2) #left edge middle
-    cv2.line(image, (x2, y1), (x6, y4), (0, 255, 0), 2) #right edge middle
+    cv2.line(image, (x1, y1), (rightLowerX, 1599), (0, 255, 0), 2) #right edge 
+    cv2.line(image, (x2, y1), (leftLowerX, 1599), (0, 255, 0), 2) #left edge 
 
-    cv2.line(image, (x5, y2), (x3, y3), (0, 255, 0), 2) #left edge lower
-    cv2.line(image, (x6, y4), (x4, y3), (0, 255, 0), 2)  #right edge lower
+    cv2.line(image, (rightLowerX, 1599), (leftLowerX, 1599), (0, 255, 0), 2) #bottom
 
-    cv2.line(image, (x3, y3), (x4, y3), (0, 255, 0), 2) #bottom
-
-
-    cv2.imwrite(f"image_{no}.jpg",image)
+    cv2.imwrite(f'image_{no}.jpg',image)
